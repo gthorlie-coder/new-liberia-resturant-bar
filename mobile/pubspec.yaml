@@ -1,0 +1,25 @@
+name: new_liberia_restaurant_bar
+description: New Liberia Restaurant & Bar — customer mobile app
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.1
+  firebase_core: ^2.31.0
+  firebase_auth: ^4.19.5
+  provider: ^6.1.2
+  cached_network_image: ^3.3.1
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
