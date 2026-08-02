@@ -8,7 +8,7 @@ const pool = require("../config/db");
  * (order status, receipts, refunds) fully working against a stable interface
  * regardless of which provider is behind it.
  */
-async function initiateCharge(method) {
+function initiateCharge(method) {
   return async function (req, res, next) {
     try {
       const { order_id, amount } = req.body;
