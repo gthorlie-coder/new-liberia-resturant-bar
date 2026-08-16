@@ -1,17 +1,18 @@
-const express = require("express");
-const {
-  listCategories, listMenuItems, createMenuItem, updateMenuItem,
-} = require("../controllers/menuController");
-const { requireAuth, requireRole } = require("../middleware/auth");
-
+const express = require('express');
 const router = express.Router();
+const menuController = require('../controllers/menuController');
+const { authenticate, authorize } = require('../middleware/auth');
 
-// Public browsing — no auth required, matches the customer app's home/menu screens.
-router.get("/branches/:branchId/categories", listCategories);
-router.get("/branches/:branchId/menu-items", listMenuItems);
+router.get('/categories', menuController.listCategories);
+router.get('/items', menuController.listMenuItems);
 
-// Manager/Admin only — menu changes affect every customer immediately.
-router.post("/menu-items", requireAuth, requireRole("manager", "admin"), createMenuItem);
-router.patch("/menu-items/:id", requireAuth, requireRole("manager", "admin"), updateMenuItem);
+// Staff/admin only
+router.post('/categories', authenticate, authorize('admin', 'staff'), menuController.createCategory);
+router.patch('/categories/:id', authenticate, authorize('admin', 'staff'), menuController.updateCategory);
+router.delete('/categories/:id', authenticate, authorize('admin'), menuController.deleteCategory);
+
+router.post('/items', authenticate, authorize('admin', 'staff'), menuController.createMenuItem);
+router.patch('/items/:id', authenticate, authorize('admin', 'staff'), menuController.updateMenuItem);
+router.delete('/items/:id', authenticate, authorize('admin'), menuController.deleteMenuItem);
 
 module.exports = router;

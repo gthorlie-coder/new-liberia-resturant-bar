@@ -1,13 +1,10 @@
-const express = require("express");
-const { syncUser, me } = require("../controllers/authController");
-const { requireAuth } = require("../middleware/auth");
-
+const express = require('express');
 const router = express.Router();
+const { register, login, me } = require('../controllers/authController');
+const { authenticate } = require('../middleware/auth');
 
-// Called by the mobile/web client immediately after Firebase sign-in succeeds.
-router.post("/sync", syncUser);
-
-// Returns the currently authenticated user's profile.
-router.get("/me", requireAuth, me);
+router.post('/register', register);
+router.post('/login', login);
+router.get('/me', authenticate, me);
 
 module.exports = router;

@@ -1,20 +1,16 @@
-const express = require("express");
-const {
-  createOrder, getOrder, listUserOrders, updateOrderStatus,
-} = require("../controllers/orderController");
-const { requireAuth, requireRole } = require("../middleware/auth");
-
+const express = require('express');
 const router = express.Router();
+const orderController = require('../controllers/orderController');
+const { authenticate, authorize } = require('../middleware/auth');
 
-router.post("/orders", requireAuth, createOrder);
-router.get("/orders/:id", requireAuth, getOrder);
-router.get("/users/:userId/orders", requireAuth, listUserOrders);
-
-router.patch(
-  "/orders/:id/status",
-  requireAuth,
-  requireRole("staff", "kitchen", "bartender", "cashier", "rider", "manager", "admin"),
-  updateOrderStatus
-);
+router.post('/', authenticate, orderController.createOrder);
+router.get('/mine', authenticate, orderController.listMyOrders);
+router.get('/available-deliveries', authenticate, authorize('driver'), orderController.listAvailableDeliveries);
+router.get('/my-deliveries', authenticate, authorize('driver'), orderController.myDeliveries);
+router.post('/:id/assign-driver', authenticate, authorize('driver'), orderController.assignDriver);
+router.patch('/:id/delivery-status', authenticate, authorize('driver'), orderController.updateDeliveryStatus);
+router.get('/', authenticate, authorize('admin', 'staff'), orderController.listAllOrders);
+router.get('/:id', authenticate, orderController.getOrder);
+router.patch('/:id/status', authenticate, authorize('admin', 'staff'), orderController.updateOrderStatus);
 
 module.exports = router;
