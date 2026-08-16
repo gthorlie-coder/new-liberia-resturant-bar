@@ -14,6 +14,7 @@ const userRoutes = require('./src/routes/userRoutes');
 const reservationRoutes = require('./src/routes/reservationRoutes');
 const promotionRoutes = require('./src/routes/promotionRoutes');
 const notificationRoutes = require('./src/routes/notificationRoutes');
+const setupRoutes = require('./src/routes/setupRoutes');
 
 const app = express();
 
@@ -60,6 +61,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/reservations', reservationRoutes);
 app.use('/api/promotions', promotionRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/setup', setupRoutes);
 
 // 404 handler
 app.use((req, res) => res.status(404).json({ error: 'Route not found' }));
